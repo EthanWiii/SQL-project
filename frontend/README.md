@@ -1,28 +1,39 @@
 # MarketScope Frontend
 
-这是 PostgreSQL 金融市场项目的静态行情分析前端。页面使用与 `sql/seed.sql` 相同的虚构数据生成规则，因此无需后端即可预览完整交互。
+MarketScope is the interactive analytics interface for the PostgreSQL Financial Markets project. It uses the same deterministic simulated-data rules as `sql/seed.sql`, so the complete experience works without third-party APIs.
 
-## 功能
+## Features
 
-- 切换 NOVA、MAPL、GRNE 三只虚构证券
-- 查看最新价格、累计收益率、MA20、5 日动量与 20 日年化波动率
-- 交互式收盘价与 MA20 走势图
-- 日收益率和成交量图
-- 最近 10 个交易日 OHLCV 行情表
-- 日期搜索、明暗主题和响应式布局
+- Ten-stock market universe spanning technology, financials, energy, consumer, semiconductors, and automotive
+- Security selector and scrollable market watchlist
+- Latest close, cumulative return, MA20, five-day momentum, and 20-day annualized volatility
+- Interactive close-price and MA20 chart
+- Daily-return and trading-volume visualizations
+- Searchable OHLCV market-data table
+- Light and dark themes with responsive desktop and mobile layouts
+- On-page project architecture and technology stack
 
-## 本地运行
+## Technology Stack
 
-在 `frontend` 目录执行：
+| Layer | Technology | Purpose |
+|---|---|---|
+| Data ingestion | Python | Extract, validate, and load market data |
+| Database | PostgreSQL | Normalized securities and daily-price storage |
+| Analytics | Advanced SQL | CTEs, returns, moving averages, momentum, and rolling volatility |
+| Frontend | HTML, CSS, JavaScript | Responsive interactive market dashboard |
+| Reporting | Power BI | Executive dashboards and portfolio reporting |
+| Automation | Power Automate | Data-quality alerts and reporting workflows |
+
+## Run Locally
+
+From the `frontend` directory:
 
 ```bash
 python3 -m http.server 8080
 ```
 
-然后打开 [http://localhost:8080](http://localhost:8080)。
+Open [http://localhost:8080](http://localhost:8080). The project has no frontend package dependencies and can also be opened directly from `index.html`.
 
-页面没有第三方依赖，也可以直接双击 `index.html` 打开。
+## Data Notice
 
-## 数据说明
-
-所有公司、ticker 和行情均为虚构内容，仅用于 SQL 与前端开发教学，不构成投资建议。真实项目可以将 `app.js` 中的本地数据替换为 PostgreSQL API 返回的数据。
+All prices are simulated for engineering and analytics demonstrations. Recognizable company names and ticker symbols identify the sample market universe; the displayed values are not live quotes and must not be used for investment decisions.

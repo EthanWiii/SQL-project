@@ -1,10 +1,19 @@
 # Financial Markets Data Pipeline & Analytics Platform
 
-> **Status:** In Progress
+> **Status:** Phase 1 Complete · Interactive Dashboard Live
 
 An end-to-end financial data engineering and analytics project designed to ingest, validate, transform, store, and analyze market and portfolio data.
 
 The project is being built to demonstrate practical skills in **Python, SQL, PostgreSQL, ETL, data modeling, financial analytics, Power BI, and workflow automation**.
+
+
+## Current Build
+
+- **Interactive dashboard:** Ten-security market universe with responsive charts, light/dark themes, OHLCV tables, and security-level analytics.
+- **PostgreSQL dataset:** 300 deterministic sample price records across 10 securities and 30 trading sessions.
+- **SQL learning track:** Four progressive levels covering filters, joins, aggregations, CTEs, subqueries, returns, and window functions.
+- **Live private demo:** [Open MarketScope](https://marketscope-analytics.jauntytapir16.chatgpt.site)
+- **Source:** [Frontend](frontend/) · [PostgreSQL and analytics](sql/)
 
 ---
 
@@ -220,10 +229,10 @@ SQL-project/
 
 ### Phase 1 — Database & SQL
 - [ ] Set up PostgreSQL
-- [ ] Design the relational schema
-- [ ] Create core tables and constraints
-- [ ] Load sample market data
-- [ ] Write initial SQL analytics
+- [x] Design the relational schema
+- [x] Create core tables and constraints
+- [x] Load sample market data
+- [x] Write initial SQL analytics
 
 ### Phase 2 — Python ETL
 - [ ] Build market-data extraction
@@ -233,9 +242,9 @@ SQL-project/
 - [ ] Add automated data-quality checks
 
 ### Phase 3 — Financial Analytics
-- [ ] Daily and cumulative returns
+- [x] Daily and cumulative returns
 - [ ] Portfolio valuation and P&L
-- [ ] Rolling volatility
+- [x] Rolling volatility
 - [ ] Maximum drawdown
 - [ ] Beta vs. benchmark
 - [ ] Exposure and concentration metrics

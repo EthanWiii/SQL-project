@@ -9,7 +9,7 @@
 ```text
 .
 ├── schema.sql                       # 数据表、约束和索引
-├── seed.sql                         # 3 只证券 × 30 个交易日
+├── seed.sql                         # 10 只证券 × 30 个交易日
 ├── level_1_basics.sql               # SELECT / WHERE / ORDER BY
 ├── level_2_joins_aggregations.sql   # JOIN / GROUP BY / HAVING
 ├── level_3_returns.sql              # Subquery / CTE / 收益率
@@ -60,7 +60,7 @@ psql -d global_markets -c "SELECT COUNT(*) FROM securities;"
 psql -d global_markets -c "SELECT COUNT(*) FROM daily_prices;"
 ```
 
-预期分别得到 `3` 和 `90`。
+预期分别得到 `10` 和 `300`。
 
 按顺序运行练习：
 
@@ -128,11 +128,11 @@ Rolling Volatility = 最近 20 个日收益率的样本标准差 × √252
  GRNE   |           30 |     54.77 |     48.00 |     61.50
 ```
 
-运行 Level 3 的日收益率查询时，每只证券的第一天没有前一日价格，因此不会出现在结果中。预期共返回 `3 × 29 = 87` 行。
+运行 Level 3 的日收益率查询时，每只证券的第一天没有前一日价格，因此不会出现在结果中。预期共返回 `10 × 29 = 290` 行。
 
-运行 Level 4 的第一个查询时，20 个日收益率需要 21 个收盘价观测值，因此只有第 21 个观测值及之后的记录才会显示。预期共返回 `3 × 10 = 30` 行。
+运行 Level 4 的第一个查询时，20 个日收益率需要 21 个收盘价观测值，因此只有第 21 个观测值及之后的记录才会显示。预期共返回 `10 × 10 = 100` 行。
 
-最后一个查询只显示每只证券在 `2025-02-12` 的最新指标，预期返回：
+最后一个查询只显示每只证券在 `2025-02-12` 的最新指标，预期返回 10 行。以下为其中三行：
 
 ```text
  ticker | trade_date | close_price | ma20   | momentum_5d_pct | rolling_volatility_20d_pct

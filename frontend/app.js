@@ -1,7 +1,14 @@
 const ASSETS = {
-  NOVA: { name: "Nova Systems Ltd.", sector: "Technology", currency: "USD", base: 100, trend: 0.8, volume: 500000 },
-  MAPL: { name: "Maple Bank Corp.", sector: "Financials", currency: "CAD", base: 75, trend: 0.25, volume: 250000 },
-  GRNE: { name: "Green Energy Inc.", sector: "Energy", currency: "USD", base: 48, trend: 0.45, volume: 100000 }
+  NOVA: { name: "Nova Systems Ltd.", sector: "Technology", currency: "USD", base: 100, trend: 0.80, volume: 500000, color: "#0f7a55" },
+  MAPL: { name: "Maple Bank Corp.", sector: "Financials", currency: "CAD", base: 75, trend: 0.25, volume: 250000, color: "#b7791f" },
+  GRNE: { name: "Green Energy Inc.", sector: "Energy", currency: "USD", base: 48, trend: 0.45, volume: 100000, color: "#23896b" },
+  AAPL: { name: "Apple Inc.", sector: "Technology", currency: "USD", base: 188, trend: 0.72, volume: 7200000, color: "#475569" },
+  MSFT: { name: "Microsoft Corp.", sector: "Technology", currency: "USD", base: 414, trend: 1.15, volume: 5100000, color: "#2563eb" },
+  NVDA: { name: "NVIDIA Corp.", sector: "Semiconductors", currency: "USD", base: 132, trend: 1.05, volume: 9800000, color: "#6d8f32" },
+  AMZN: { name: "Amazon.com Inc.", sector: "Consumer", currency: "USD", base: 215, trend: 0.62, volume: 6400000, color: "#d97706" },
+  JPM: { name: "JPMorgan Chase & Co.", sector: "Financials", currency: "USD", base: 238, trend: 0.48, volume: 3300000, color: "#1d4ed8" },
+  XOM: { name: "Exxon Mobil Corp.", sector: "Energy", currency: "USD", base: 108, trend: 0.18, volume: 4400000, color: "#dc2626" },
+  TSLA: { name: "Tesla Inc.", sector: "Automotive", currency: "USD", base: 356, trend: 1.30, volume: 8600000, color: "#b91c1c" }
 };
 
 const adjustments = [0, 1.2, -0.6, 0.9, -0.3];
@@ -57,8 +64,8 @@ function percent(value, digits = 2, signed = true) {
 function shortVolume(value) { return `${(value / 1000000).toFixed(2)}M`; }
 function dateLabel(date, long = false) {
   return long
-    ? new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "long", day: "numeric" }).format(date)
-    : new Intl.DateTimeFormat("zh-CN", { month: "2-digit", day: "2-digit" }).format(date);
+    ? new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "long", day: "numeric" }).format(date)
+    : new Intl.DateTimeFormat("en-CA", { month: "short", day: "numeric" }).format(date);
 }
 
 function metrics(ticker) {
@@ -92,6 +99,7 @@ function updateOverview() {
   const stats = metrics(selectedTicker);
   const symbol = asset.currency === "CAD" ? "CA" : "";
   document.querySelector("#tickerBadge").textContent = selectedTicker[0];
+  document.querySelector("#tickerBadge").style.background = asset.color;
   document.querySelector("#assetName").textContent = asset.name;
   document.querySelector("#assetTicker").textContent = selectedTicker;
   document.querySelector("#assetMeta").textContent = `${asset.sector} · ${asset.currency}`;
@@ -103,11 +111,11 @@ function updateOverview() {
   change.className = `change-pill ${stats.dailyChange >= 0 ? "positive" : "negative"}`;
   document.querySelector("#cumulativeReturn").textContent = percent(stats.cumulative);
   document.querySelector("#ma20").textContent = `${symbol}${money(stats.ma20, asset.currency)}`;
-  document.querySelector("#maDistance").textContent = `价格${stats.maDistance >= 0 ? "高于" : "低于"}均线 ${Math.abs(stats.maDistance).toFixed(2)}%`;
+  document.querySelector("#maDistance").textContent = `Price ${Math.abs(stats.maDistance).toFixed(2)}% ${stats.maDistance >= 0 ? "above" : "below"} average`;
   document.querySelector("#momentum").textContent = percent(stats.momentum);
   document.querySelector("#volatility").textContent = percent(stats.volatility, 2, false);
-  document.querySelector("#avgReturn").textContent = `日均 ${percent(stats.avgReturn)}`;
-  document.querySelector("#avgVolume").textContent = `日均 ${shortVolume(stats.avgVolume)}`;
+  document.querySelector("#avgReturn").textContent = `Average ${percent(stats.avgReturn)}`;
+  document.querySelector("#avgVolume").textContent = `Average ${shortVolume(stats.avgVolume)}`;
 }
 
 function renderSnapshot() {
@@ -252,7 +260,7 @@ function setupChartInteraction() {
     tooltip.hidden = false;
     tooltip.style.left = `${point.x}px`;
     tooltip.style.top = `${point.y}px`;
-    tooltip.innerHTML = `<strong>${dateLabel(point.row.date, true)}</strong><br>收盘 ${money(point.row.close, ASSETS[selectedTicker].currency)}${point.ma ? `<br>MA20 ${money(point.ma, ASSETS[selectedTicker].currency)}` : ""}`;
+    tooltip.innerHTML = `<strong>${dateLabel(point.row.date, true)}</strong><br>Close ${money(point.row.close, ASSETS[selectedTicker].currency)}${point.ma ? `<br>MA20 ${money(point.ma, ASSETS[selectedTicker].currency)}` : ""}`;
   });
   canvas.addEventListener("mouseleave", () => { tooltip.hidden = true; });
 }
