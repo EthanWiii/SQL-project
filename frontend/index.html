@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Global Markets PostgreSQL 项目的交互式行情分析面板">
+  <title>MarketScope · 行情分析</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <a class="brand" href="#" aria-label="MarketScope 首页">
+        <span class="brand-mark">M</span>
+        <span>MarketScope</span>
+      </a>
+
+      <nav class="nav-list">
+        <a class="nav-item active" href="#overview"><span>◫</span> 市场概览</a>
+        <a class="nav-item" href="#chart"><span>⌁</span> 行情走势</a>
+        <a class="nav-item" href="#table"><span>≡</span> 行情数据</a>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="status-dot"></span>
+        <div>
+          <strong>数据已更新</strong>
+          <small>虚构教学数据 · 30 日</small>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">GLOBAL MARKETS / ANALYTICS</p>
+          <h1>行情分析中心</h1>
+        </div>
+        <div class="topbar-actions">
+          <label class="select-wrap">
+            <span class="sr-only">选择证券</span>
+            <select id="tickerSelect" aria-label="选择证券"></select>
+          </label>
+          <button class="icon-button" id="themeButton" aria-label="切换主题" title="切换主题">☼</button>
+        </div>
+      </header>
+
+      <section class="market-hero" id="overview">
+        <div class="asset-identity">
+          <span class="ticker-badge" id="tickerBadge">N</span>
+          <div>
+            <div class="asset-heading">
+              <h2 id="assetName">Nova Systems Ltd.</h2>
+              <span id="assetTicker">NOVA</span>
+            </div>
+            <p id="assetMeta">Technology · USD</p>
+          </div>
+        </div>
+        <div class="quote-block">
+          <p class="latest-label">最新收盘价</p>
+          <div class="price-row">
+            <strong id="latestPrice">$122.90</strong>
+            <span class="change-pill positive" id="dailyChange">+0.25%</span>
+          </div>
+          <p class="latest-date" id="latestDate">2025年2月12日</p>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="核心指标">
+        <article class="kpi-card">
+          <div class="kpi-label"><span>区间收益</span><span class="mini-icon">↗</span></div>
+          <strong id="cumulativeReturn">+22.90%</strong>
+          <small>首日至最新交易日</small>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label"><span>MA20</span><span class="mini-icon">∿</span></div>
+          <strong id="ma20">$115.84</strong>
+          <small id="maDistance">价格高于均线 6.10%</small>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label"><span>5 日动量</span><span class="mini-icon">⌁</span></div>
+          <strong id="momentum">+3.36%</strong>
+          <small>近 5 个交易日</small>
+        </article>
+        <article class="kpi-card">
+          <div class="kpi-label"><span>20 日波动率</span><span class="mini-icon">≈</span></div>
+          <strong id="volatility">18.47%</strong>
+          <small>年化样本标准差</small>
+        </article>
+      </section>
+
+      <section class="content-grid" id="chart">
+        <article class="panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">PRICE HISTORY</p>
+              <h3>价格走势</h3>
+            </div>
+            <div class="legend" aria-label="图例">
+              <span><i class="legend-dot price-dot"></i>收盘价</span>
+              <span><i class="legend-dot ma-dot"></i>MA20</span>
+            </div>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="priceChart" role="img" aria-label="收盘价和20日移动平均走势图"></canvas>
+            <div class="chart-tooltip" id="chartTooltip" hidden></div>
+          </div>
+        </article>
+
+        <article class="panel snapshot-panel">
+          <div class="panel-header">
+            <div>
+              <p class="panel-kicker">MARKET SNAPSHOT</p>
+              <h3>市场快照</h3>
+            </div>
+          </div>
+          <div class="snapshot-list" id="snapshotList"></div>
+        </article>
+
+        <article class="panel returns-panel">
+          <div class="panel-header compact">
+            <div>
+              <p class="panel-kicker">DAILY RETURN</p>
+              <h3>日收益率</h3>
+            </div>
+            <span class="panel-value" id="avgReturn">日均 +0.71%</span>
+          </div>
+          <div class="bar-chart" id="returnChart" aria-label="日收益率柱状图"></div>
+        </article>
+
+        <article class="panel volume-panel">
+          <div class="panel-header compact">
+            <div>
+              <p class="panel-kicker">VOLUME</p>
+              <h3>成交量</h3>
+            </div>
+            <span class="panel-value" id="avgVolume">日均 1.86M</span>
+          </div>
+          <div class="bar-chart volume-bars" id="volumeChart" aria-label="成交量柱状图"></div>
+        </article>
+      </section>
+
+      <section class="panel data-panel" id="table">
+        <div class="panel-header table-header">
+          <div>
+            <p class="panel-kicker">MARKET DATA</p>
+            <h3>最近行情</h3>
+          </div>
+          <label class="search-box">
+            <span>⌕</span>
+            <span class="sr-only">搜索日期</span>
+            <input id="tableSearch" type="search" placeholder="搜索日期">
+          </label>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>交易日期</th>
+                <th>开盘</th>
+                <th>最高</th>
+                <th>最低</th>
+                <th>收盘</th>
+                <th>日收益</th>
+                <th>成交量</th>
+              </tr>
+            </thead>
+            <tbody id="priceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>
+        <span>MarketScope · PostgreSQL Financial Markets Project</span>
+        <span>数据仅用于教学演示</span>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
